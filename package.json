@@ -7,7 +7,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Brian Cho",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
