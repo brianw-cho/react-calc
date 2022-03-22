@@ -1,38 +1,51 @@
 import { ACTIONS } from "./App";
 
-export const BUTTON_TYPE = {
-    CLEAR: "clear"
-}
+async function getResult({ dispatch, equation } ) {
+    
+    let queryString = equation
 
-function Button({ dispatch, value, type }) {
-    let actionType;
+    queryString = queryString.replaceAll("+", "p")
+    queryString = queryString.replaceAll("×", "*")
+    queryString = queryString.replaceAll("÷", "/")
 
-    switch (type) {
-        case "number":
-            actionType = ACTIONS.ADD_DIGIT
-            break;
-        case "size-two":
-            actionType = ACTIONS.ADD_DIGIT
-            break;
-        case "operator":
-            actionType = ACTIONS.OPERATE
-            break;
-        case BUTTON_TYPE.CLEAR:
-            actionType = ACTIONS.CLEAR
-            break;
-        case "percent":
-            actionType = ACTIONS.PERCENTAGE
-            break;
-        case "plus-minus":
-            actionType = ACTIONS.PLUSMINUS
-            break;
-        case "equal":
-            actionType = ACTIONS.EQUAL
-            break;
+    let result = await fetch(`/calculator?expr=${queryString}`).then(response => {
+        if (response.ok){
+            return response.text()
+        } else {
+            return "ERROR 404"
+        }
+    })
+
+    result = result.replaceAll("\"", "")
+
+    dispatch({ type: ACTIONS.EVALUATE, payload: { value: result } })
+} 
+
+function Button({ dispatch, value, type, equation }) {
+    let btnType
+
+    if (type == ACTIONS.EVALUATE) {
+        return (
+                <button className={ type } onClick={() => getResult({ dispatch, equation }) }>
+                    { value }
+                </button>
+            )
+    }
+    
+    if (type == ACTIONS.EVALUATE || value == "." || value == "%" || value == "=") {
+        btnType = "grey"
+    } else if (type == ACTIONS.CLEAR) {
+        btnType = "grey"
+        value = "C"
+    }
+    else if (value == "+" || value == "-" || value == "×" || value == "÷") {
+        btnType = "orange"
+    } else {
+        btnType = "number"
     }
 
     return(
-        <button className={type} onClick={() => dispatch({ type: actionType, payload: {value: value}}) }>
+        <button className={ btnType } onClick={() => dispatch({ type: type, payload: { value: value } }) }>
             { value }
         </button>
     )

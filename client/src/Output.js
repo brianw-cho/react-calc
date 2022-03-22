@@ -1,11 +1,9 @@
-import { useReducer } from "react"
 
-
-function Output({prevValue, currValue}) {
+function Output({ equation, result }) {
     return (
         <div className="output">
-            <div className="prev-out">{ prevValue }</div>
-            <div className="current-out">{ currValue }</div>
+            <div className="equation">{ equation }</div>
+            <div className="result">{ result }</div>
         </div>
     )
 }
