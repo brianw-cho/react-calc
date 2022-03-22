@@ -3,12 +3,19 @@ import Output from "./Output";
 import Button from "./Button";
 import { useReducer } from "react"
 
+/**
+ * Actions that can be performed by the reducer
+ */
 export const ACTIONS = {
   ADD: "add",
   CLEAR: "clear",
   EVALUATE: "evaluate"
 }
 
+/**
+ * Reducer function for the the useReducer hook in App
+ * alters equations and result based on the dispatch type
+ */
 function reducer(state, { type, payload }){
   let newEquation = state.equation
   let newResult = state.result

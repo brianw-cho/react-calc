@@ -1,5 +1,8 @@
 import { ACTIONS } from "./App";
 
+/**
+ * Fetches API request with given equation
+ */
 async function getResult({ dispatch, equation } ) {
     
     let queryString = equation
